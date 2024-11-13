@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import projetos.wemerson.dto.GameDTO;
 import projetos.wemerson.dto.GameMinDTO;
 import projetos.wemerson.entities.Game;
+import projetos.wemerson.projections.GameMinProjection;
 import projetos.wemerson.repositories.GameRepository;
 
 @Service
@@ -30,4 +31,11 @@ public class GamesService {
 		GameDTO dto = new GameDTO(resullt);
 		return dto;
 	}
+	
+	@Transactional(readOnly = true)
+	public List<GameMinDTO> findByGameList(Long listId) {
+		List<GameMinProjection> games = gameRepository.searchByList(listId);
+		return games.stream().map(GameMinDTO::new).toList();
+	}
+	
 }
